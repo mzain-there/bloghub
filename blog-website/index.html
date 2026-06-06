@@ -1,0 +1,35 @@
+<!doctype html>
+<html lang="en" class="dark">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <meta name="description" content="BlogHub - A premium blog platform for creators and readers" />
+    <title>BlogHub - Premium Blog Platform</title>
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700;800;900&display=swap" rel="stylesheet" />
+    <script src="https://cdn.tailwindcss.com"></script>
+    <script>
+      tailwind.config = {
+        darkMode: 'class',
+        theme: {
+          extend: {
+            fontFamily: { inter: ['Inter', 'sans-serif'] },
+            colors: {
+              primary: { DEFAULT: '#3B82F6', light: '#60A5FA', dark: '#2563EB' },
+              secondary: { DEFAULT: '#06B6D4', light: '#22D3EE', dark: '#0891B2' },
+              highlight: { DEFAULT: '#8B5CF6', light: '#A78BFA', dark: '#7C3AED' },
+              success: { DEFAULT: '#10B981', light: '#34D399', dark: '#059669' },
+              danger: { DEFAULT: '#EF4444', light: '#F87171', dark: '#DC2626' },
+              dark: { 900: '#0F172A', 800: '#111827', 700: '#1E293B', 600: '#334155', 500: '#475569' },
+            },
+          },
+        },
+      };
+    </script>
+  </head>
+  <body class="font-inter bg-dark-900 text-slate-100">
+    <div id="root"></div>
+    <script type="module" src="/src/main.jsx"></script>
+  </body>
+</html>
