@@ -29,23 +29,26 @@ const BlogForm = () => {
   useEffect(() => {
     if (isEditMode) {
       const blog = getBlogById(id);
-      if (blog) {
-        setFormData({
-          title: blog.title || '',
-          category: blog.category || '',
-          coverImage: blog.coverImage || '',
-          tags: blog.tags ? blog.tags.join(', ') : '',
-          shortDescription: blog.shortDescription || '',
-          content: blog.content || ''
-        });
+      if (!blog || blog.isApi || blog.userId !== currentUser?.id) {
+        toast.error('You can only edit your own blogs');
+        navigate('/dashboard/blogs');
+        return;
       }
+      setFormData({
+        title: blog.title || '',
+        category: blog.category || '',
+        coverImage: blog.coverImage || '',
+        tags: blog.tags ? blog.tags.join(', ') : '',
+        shortDescription: blog.shortDescription || '',
+        content: blog.content || ''
+      });
     } else {
       // Default category if categories exist
       if (categories.length > 0) {
         setFormData(prev => ({ ...prev, category: categories[0].name }));
       }
     }
-  }, [id, isEditMode, getBlogById, categories]);
+  }, [id, isEditMode, getBlogById, categories, currentUser, navigate]);
 
   const handleChange = (e) => {
     const { name, value } = e.target;

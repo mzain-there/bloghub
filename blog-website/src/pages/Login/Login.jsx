@@ -30,7 +30,7 @@ const Login = () => {
       return;
     }
 
-    const res = login(email, password);
+    const res = login(email.trim().toLowerCase(), password);
     if (res.success) {
       toast.success(res.message);
       navigate('/dashboard');

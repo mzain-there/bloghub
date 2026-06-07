@@ -51,10 +51,14 @@ function AppRoutes() {
       <Route path="/login" element={<Login />} />
       <Route path="/signup" element={<Signup />} />
 
-      {/* Dashboard Routes - publicly accessible */}
-      <Route 
-        path="/dashboard" 
-        element={<DashboardLayout />}
+      {/* Dashboard Routes - requires authentication */}
+      <Route
+        path="/dashboard"
+        element={
+          <ProtectedRoute>
+            <DashboardLayout />
+          </ProtectedRoute>
+        }
       >
         <Route index element={<DashboardHome />} />
         <Route path="blogs" element={<BlogManage />} />

@@ -5,7 +5,7 @@ import { useTheme } from '../../context/ThemeContext';
 import { truncateText, formatDate, getInitials } from '../../utils/helpers';
 import LikeButton from '../common/LikeButton';
 
-const BlogCard = ({ blog, index = 0, onLikeChange }) => {
+const BlogCard = ({ blog, index = 0 }) => {
   const { isDark } = useTheme();
 
   return (
@@ -64,10 +64,10 @@ const BlogCard = ({ blog, index = 0, onLikeChange }) => {
                 <div className={`flex items-center gap-2 text-xs ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>
                   <FiEye size={12} /><span>{blog.views || 0}</span>
                 </div>
-                <LikeButton 
+                <LikeButton
                   blogId={blog.id}
                   initialLikes={blog.likes || 0}
-                  onLikeChange={onLikeChange}
+                  likedBy={blog.likedBy || []}
                 />
               </div>
             </div>

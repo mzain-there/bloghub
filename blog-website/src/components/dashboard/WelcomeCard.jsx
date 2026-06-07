@@ -9,7 +9,7 @@ import { getInitials } from '../../utils/helpers';
 const WelcomeCard = () => {
   const { isDark } = useTheme();
   const { currentUser } = useAuth();
-  const { stats } = useBlog();
+  const { userStats } = useBlog();
   const navigate = useNavigate();
 
   return (
@@ -36,7 +36,9 @@ const WelcomeCard = () => {
               Welcome back, {currentUser?.fullName?.split(' ')[0] || 'User'} 👋
             </h2>
             <p className="text-white/70 text-sm mt-1">
-              You have published {stats.userBlogs} blog{stats.userBlogs !== 1 ? 's' : ''}. Keep writing!
+              {userStats.totalBlogs === 0
+                ? "You haven't published any blogs yet. Start writing to see your stats!"
+                : `You have published ${userStats.totalBlogs} blog${userStats.totalBlogs !== 1 ? 's' : ''}. Keep writing!`}
             </p>
           </div>
         </div>

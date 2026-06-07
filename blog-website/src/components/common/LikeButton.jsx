@@ -1,44 +1,44 @@
 import { useState, useEffect } from 'react';
 import { FiHeart } from 'react-icons/fi';
 import { motion } from 'framer-motion';
+import { toast } from 'react-toastify';
 import { useTheme } from '../../context/ThemeContext';
+import { useAuth } from '../../context/AuthContext';
+import { useBlog } from '../../context/BlogContext';
 
-const LikeButton = ({ blogId, initialLikes = 0, onLikeChange }) => {
+const LikeButton = ({ blogId, initialLikes = 0, likedBy = [] }) => {
   const { isDark } = useTheme();
-  const [isLiked, setIsLiked] = useState(false);
-  const [likeCount, setLikeCount] = useState(initialLikes);
+  const { currentUser } = useAuth();
+  const { toggleLike, hasUserLiked } = useBlog();
 
-  // Load liked status from localStorage
+  const [likeCount, setLikeCount] = useState(initialLikes);
+  const [isLiked, setIsLiked] = useState(false);
+
   useEffect(() => {
-    const likedBlogs = JSON.parse(localStorage.getItem('likedBlogs') || '{}');
-    if (likedBlogs[blogId]) {
-      setIsLiked(true);
+    setLikeCount(initialLikes);
+  }, [initialLikes]);
+
+  useEffect(() => {
+    if (currentUser) {
+      setIsLiked(hasUserLiked(blogId, currentUser.id));
+    } else {
+      setIsLiked(false);
     }
-  }, [blogId]);
+  }, [blogId, currentUser, likedBy, hasUserLiked]);
 
   const handleLike = (e) => {
     e.preventDefault();
     e.stopPropagation();
 
-    const likedBlogs = JSON.parse(localStorage.getItem('likedBlogs') || '{}');
-    let newCount = likeCount;
-
-    if (isLiked) {
-      // Unlike
-      delete likedBlogs[blogId];
-      newCount = likeCount - 1;
-    } else {
-      // Like
-      likedBlogs[blogId] = true;
-      newCount = likeCount + 1;
+    if (!currentUser) {
+      toast.info('Please log in to like posts');
+      return;
     }
 
-    localStorage.setItem('likedBlogs', JSON.stringify(likedBlogs));
-    setIsLiked(!isLiked);
-    setLikeCount(newCount);
-    
-    if (onLikeChange) {
-      onLikeChange(newCount, !isLiked);
+    const result = toggleLike(blogId, currentUser.id);
+    if (result) {
+      setIsLiked(result.liked);
+      setLikeCount(result.likes);
     }
   };
 
@@ -66,7 +66,7 @@ const LikeButton = ({ blogId, initialLikes = 0, onLikeChange }) => {
         <FiHeart
           size={16}
           fill={isLiked ? 'currentColor' : 'none'}
-          stroke={isLiked ? 'currentColor' : 'currentColor'}
+          stroke="currentColor"
         />
       </motion.div>
       <span className="text-sm font-medium">{likeCount}</span>

@@ -1,6 +1,7 @@
 import React, { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useAuth } from '../../context/AuthContext';
+import { useBlog } from '../../context/BlogContext';
 import { useTheme } from '../../context/ThemeContext';
 import { toast } from 'react-toastify';
 import Breadcrumb from '../../components/common/Breadcrumb';
@@ -10,6 +11,7 @@ import { FiUser, FiMail, FiLock, FiSun, FiMoon, FiTrash2, FiLogOut } from 'react
 const Settings = () => {
   const { isDark, toggleTheme } = useTheme();
   const { currentUser, updateProfile, changePassword, deleteAccount, logout } = useAuth();
+  const { deleteUserBlogs } = useBlog();
   const navigate = useNavigate();
 
   const [profileData, setProfileData] = useState({
@@ -59,8 +61,11 @@ const Settings = () => {
   };
 
   const handleDeleteAccount = () => {
+    if (currentUser) {
+      deleteUserBlogs(currentUser.id);
+    }
     deleteAccount();
-    toast.success('Your account has been deleted permanently');
+    toast.success('Your account and all your blogs have been deleted permanently');
     navigate('/login');
   };
 

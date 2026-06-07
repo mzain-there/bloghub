@@ -51,28 +51,30 @@ export const AuthProvider = ({ children }) => {
 
   const signup = useCallback((userData) => {
     const { fullName, username, email, password, profilePicture } = userData;
+    const normalizedEmail = email.trim().toLowerCase();
+    const normalizedUsername = username.trim();
 
-    if (!fullName || !username || !email || !password) {
+    if (!fullName?.trim() || !normalizedUsername || !normalizedEmail || !password) {
       return { success: false, message: 'All fields are required' };
     }
-    if (!validateEmail(email)) {
+    if (!validateEmail(normalizedEmail)) {
       return { success: false, message: 'Invalid email address' };
     }
     if (password.length < 6) {
       return { success: false, message: 'Password must be at least 6 characters' };
     }
-    if (users.find(u => u.email === email)) {
-      return { success: false, message: 'Email already exists' };
+    if (users.find(u => u.email.toLowerCase() === normalizedEmail)) {
+      return { success: false, message: 'An account with this email already exists' };
     }
-    if (users.find(u => u.username === username)) {
+    if (users.find(u => u.username.toLowerCase() === normalizedUsername.toLowerCase())) {
       return { success: false, message: 'Username already taken' };
     }
 
     const newUser = {
       id: generateId(),
-      fullName,
-      username,
-      email,
+      fullName: fullName.trim(),
+      username: normalizedUsername,
+      email: normalizedEmail,
       password,
       profilePicture: profilePicture || '',
       bio: '',
@@ -90,10 +92,11 @@ export const AuthProvider = ({ children }) => {
   }, [users]);
 
   const login = useCallback((email, password) => {
-    if (!email || !password) {
+    const normalizedEmail = email.trim().toLowerCase();
+    if (!normalizedEmail || !password) {
       return { success: false, message: 'All fields are required' };
     }
-    const user = users.find(u => u.email === email && u.password === password);
+    const user = users.find(u => u.email.toLowerCase() === normalizedEmail && u.password === password);
     if (!user) {
       return { success: false, message: 'Invalid email or password' };
     }

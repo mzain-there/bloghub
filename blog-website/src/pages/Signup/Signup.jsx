@@ -65,13 +65,24 @@ const Signup = () => {
       return;
     }
 
-    const res = signup(formData);
+    const res = signup({
+      ...formData,
+      email: formData.email.trim().toLowerCase(),
+      username: formData.username.trim(),
+      fullName: formData.fullName.trim(),
+    });
     if (res.success) {
       toast.success(res.message);
       navigate('/');
     } else {
       toast.error(res.message);
-      setErrors({ form: res.message });
+      if (res.message.toLowerCase().includes('email')) {
+        setErrors({ email: res.message });
+      } else if (res.message.toLowerCase().includes('username')) {
+        setErrors({ username: res.message });
+      } else {
+        setErrors({ form: res.message });
+      }
     }
   };
 
