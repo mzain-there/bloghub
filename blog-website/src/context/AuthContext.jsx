@@ -11,7 +11,6 @@ export const useAuth = () => {
 
 const USERS_KEY = 'bloghub_users';
 const SESSION_KEY = 'bloghub_session';
-const ACCOUNTS_KEY = 'bloghub_accounts';
 
 export const AuthProvider = ({ children }) => {
   const [users, setUsers] = useState(() => {
@@ -24,10 +23,9 @@ export const AuthProvider = ({ children }) => {
     return session ? JSON.parse(session) : null;
   });
 
-  const [savedAccounts, setSavedAccounts] = useState(() => {
-    const saved = localStorage.getItem(ACCOUNTS_KEY);
-    return saved ? JSON.parse(saved) : [];
-  });
+  // savedAccounts is session-only — never persisted to localStorage.
+  // It clears automatically when the user logs out.
+  const [savedAccounts, setSavedAccounts] = useState([]);
 
   const [isAuthenticated, setIsAuthenticated] = useState(!!currentUser);
 
@@ -41,13 +39,11 @@ export const AuthProvider = ({ children }) => {
       setIsAuthenticated(true);
     } else {
       localStorage.removeItem(SESSION_KEY);
+      // Clear any stale persisted accounts key from older versions
+      localStorage.removeItem('bloghub_accounts');
       setIsAuthenticated(false);
     }
   }, [currentUser]);
-
-  useEffect(() => {
-    localStorage.setItem(ACCOUNTS_KEY, JSON.stringify(savedAccounts));
-  }, [savedAccounts]);
 
   const signup = useCallback((userData) => {
     const { fullName, username, email, password, profilePicture } = userData;
@@ -116,6 +112,7 @@ export const AuthProvider = ({ children }) => {
 
   const logout = useCallback(() => {
     setCurrentUser(null);
+    setSavedAccounts([]);
   }, []);
 
   const switchAccount = useCallback((accountId) => {

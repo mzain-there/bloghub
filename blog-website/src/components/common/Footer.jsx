@@ -88,7 +88,7 @@ const Footer = () => {
             © {year} BlogHub. All rights reserved.
           </p>
           <p className={`text-sm ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>
-            Built with ❤️ using React & Tailwind CSS
+            Built by M Zain
           </p>
         </div>
       </div>

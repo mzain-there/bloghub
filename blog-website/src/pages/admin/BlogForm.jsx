@@ -156,7 +156,7 @@ const BlogForm = () => {
                 name="title"
                 value={formData.title}
                 onChange={handleChange}
-                placeholder="e.g. Mastering React Context API"
+                placeholder="e.g. Knowledge is Power: Lessons That Changed My Life"
                 className={`w-full px-4 py-3 rounded-xl border outline-none text-sm transition-colors ${
                   errors.title 
                     ? 'border-danger' 
@@ -170,13 +170,13 @@ const BlogForm = () => {
               <label className={`block text-xs font-semibold uppercase tracking-wider mb-2 ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>
                 Short Description
               </label>
-              <input 
-                type="text" 
+              <textarea 
                 name="shortDescription"
                 value={formData.shortDescription}
                 onChange={handleChange}
-                placeholder="A brief summary of the blog post..."
-                className={`w-full px-4 py-3 rounded-xl border outline-none text-sm transition-colors ${
+                rows="3"
+                placeholder="A brief summary of the blog post (shown on cards and previews)..."
+                className={`w-full px-4 py-3 rounded-xl border outline-none text-sm transition-colors resize-none ${
                   errors.shortDescription 
                     ? 'border-danger' 
                     : isDark ? 'bg-dark-700 border-white/10 text-white focus:border-primary' : 'bg-slate-50 border-slate-200 text-slate-800 focus:border-primary'
@@ -238,7 +238,7 @@ const BlogForm = () => {
                 name="tags"
                 value={formData.tags}
                 onChange={handleChange}
-                placeholder="react, context, hooks"
+                placeholder="e.g. lifestyle, travel, career"
                 className={`w-full px-4 py-3 rounded-xl border outline-none text-sm transition-colors ${
                   isDark ? 'bg-dark-700 border-white/10 text-white focus:border-primary' : 'bg-slate-50 border-slate-200 text-slate-800 focus:border-primary'
                 }`}

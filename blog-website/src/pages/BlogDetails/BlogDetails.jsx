@@ -61,9 +61,16 @@ const BlogDetails = () => {
         </motion.div>
 
         <motion.h1 initial={{ opacity: 0, y: 20 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.1 }}
-          className={`text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-6 ${isDark ? 'text-white' : 'text-slate-900'}`}>
+          className={`text-3xl md:text-4xl lg:text-5xl font-bold leading-tight mb-4 ${isDark ? 'text-white' : 'text-slate-900'}`}>
           {blog.title}
         </motion.h1>
+
+        {blog.shortDescription && (
+          <motion.p initial={{ opacity: 0, y: 10 }} animate={{ opacity: 1, y: 0 }} transition={{ delay: 0.15 }}
+            className={`text-lg md:text-xl mb-6 leading-relaxed ${isDark ? 'text-slate-400' : 'text-slate-500'}`}>
+            {blog.shortDescription}
+          </motion.p>
+        )}
 
         <motion.div initial={{ opacity: 0 }} animate={{ opacity: 1 }} transition={{ delay: 0.2 }}
           className={`flex flex-wrap items-center gap-6 mb-10 pb-8 border-b ${isDark ? 'border-white/10' : 'border-slate-200'}`}>

@@ -7,11 +7,11 @@ import { useTheme } from '../../context/ThemeContext';
 import { useAuth } from '../../context/AuthContext';
 
 const menuItems = [
-  { name: 'Dashboard', icon: FiHome, path: '/dashboard' },
-  { name: 'Blogs', icon: FiFileText, path: '/dashboard/blogs' },
-  { name: 'Add Blog', icon: FiPlusCircle, path: '/dashboard/blogs/add' },
-  { name: 'Categories', icon: FiGrid, path: '/dashboard/categories' },
-  { name: 'Settings', icon: FiSettings, path: '/dashboard/settings' },
+  { name: 'Dashboard', icon: FiHome, path: '/dashboard', end: true },
+  { name: 'Blogs', icon: FiFileText, path: '/dashboard/blogs', end: true },
+  { name: 'Add Blog', icon: FiPlusCircle, path: '/dashboard/blogs/add', end: true },
+  { name: 'Categories', icon: FiGrid, path: '/dashboard/categories', end: true },
+  { name: 'Settings', icon: FiSettings, path: '/dashboard/settings', end: true },
 ];
 
 const Sidebar = ({ isOpen, onClose, collapsed, setCollapsed }) => {
@@ -69,7 +69,7 @@ const Sidebar = ({ isOpen, onClose, collapsed, setCollapsed }) => {
           <NavLink
             key={item.path}
             to={item.path}
-            end={item.path === '/dashboard'}
+            end={item.end}
             className={linkClass}
             onClick={onClose}
           >
