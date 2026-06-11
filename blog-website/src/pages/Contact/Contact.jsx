@@ -14,9 +14,9 @@ import {
 //   Service ID  → EmailJS dashboard → Email Services
 //   Template ID → EmailJS dashboard → Email Templates
 //   Public Key  → EmailJS dashboard → Account → Public Key
-const EMAILJS_SERVICE_ID  = 'service_lr4lkso';
-const EMAILJS_TEMPLATE_ID = 'template_tm4fumj';
-const EMAILJS_PUBLIC_KEY  = 'yEwbOeWR6v-JSfloG';
+const EMAILJS_SERVICE_ID  = import.meta.env.VITE_EMAILJS_SERVICE_ID;
+const EMAILJS_TEMPLATE_ID = import.meta.env.VITE_EMAILJS_TEMPLATE_ID;
+const EMAILJS_PUBLIC_KEY  = import.meta.env.VITE_EMAILJS_PUBLIC_KEY;
 // ─────────────────────────────────────────────────────────────────────────────
 
 const contactInfo = [
