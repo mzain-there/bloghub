@@ -36,9 +36,9 @@ const Footer = () => {
 
   const socials = [
     { icon: FaTwitter, href: '#', label: 'Twitter' },
-    { icon: FaGithub, href: '#', label: 'GitHub' },
-    { icon: FaLinkedin, href: '#', label: 'LinkedIn' },
-    { icon: FaYoutube, href: '#', label: 'YouTube' },
+    { icon: FaGithub, href: 'https://github.com/mzain-there', label: 'GitHub' },
+    { icon: FaLinkedin, href: 'https://linkedin.com/in/m-zain-there7989', label: 'LinkedIn' },
+    { icon: FaYoutube, href: 'https://www.youtube.com/channel/UCWCgkd4-Ju5Wg2pzbLsWZoQ', label: 'YouTube' },
   ];
 
   return (

@@ -72,7 +72,7 @@ const CategoryManage = () => {
                   type="text" 
                   value={newCatName}
                   onChange={e => setNewCatName(e.target.value)}
-                  placeholder="e.g. Serverless"
+                  placeholder="e.g friends, life"
                   className={`w-full px-4 py-3 rounded-xl border outline-none text-sm transition-colors ${
                     isDark ? 'bg-dark-700 border-white/10 text-white focus:border-primary' : 'bg-slate-50 border-slate-200 text-slate-800 focus:border-primary'
                   }`}

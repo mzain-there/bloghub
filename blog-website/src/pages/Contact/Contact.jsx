@@ -22,8 +22,7 @@ const EMAILJS_PUBLIC_KEY  = 'yEwbOeWR6v-JSfloG';
 const contactInfo = [
   {
     icon: FiMail,
-    color: 'text-primary',
-    bg: 'bg-primary/10',
+    gradient: 'from-primary to-secondary',
     title: 'Email Us',
     detail: 'mzainthere@gmail.com',
     sub: 'We reply within 24 hours',
@@ -31,24 +30,21 @@ const contactInfo = [
   },
   {
     icon: FiPhone,
-    color: 'text-secondary',
-    bg: 'bg-secondary/10',
+    gradient: 'from-secondary to-cyan-400',
     title: 'Call Us',
     detail: '+92 300 000 0000',
     sub: 'Mon – Fri, 9 AM – 6 PM PKT',
   },
   {
     icon: FiMapPin,
-    color: 'text-highlight',
-    bg: 'bg-highlight/10',
+    gradient: 'from-highlight to-orange-400',
     title: 'Our Office',
     detail: 'Sector I-8, Islamabad',
     sub: 'Pakistan',
   },
   {
     icon: FiClock,
-    color: 'text-green-400',
-    bg: 'bg-green-400/10',
+    gradient: 'from-green-400 to-emerald-500',
     title: 'Support Hours',
     detail: 'Mon – Sat',
     sub: '9:00 AM – 8:00 PM PKT',
@@ -185,22 +181,27 @@ const Contact = () => {
               transition={{ delay: i * 0.07 }}
             >
               {item.href ? (
-                <a href={item.href} target="_blank" rel="noreferrer" className={`block ${cardBase} p-6 hover:-translate-y-1 transition-transform duration-300 cursor-pointer hover:border-primary/40`}>
-                  <div className={`w-12 h-12 rounded-xl ${item.bg} flex items-center justify-center ${item.color} mb-4`}>
+                <a
+                  href={item.href}
+                  target="_blank"
+                  rel="noreferrer"
+                  className={`block p-6 rounded-2xl bg-gradient-to-br ${item.gradient} shadow-lg hover:-translate-y-1 transition-transform duration-300 cursor-pointer`}
+                >
+                  <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center text-white mb-4 backdrop-blur-sm">
                     <item.icon size={20} />
                   </div>
-                  <h4 className={`font-bold mb-1 ${isDark ? 'text-white' : 'text-slate-800'}`}>{item.title}</h4>
-                  <p className="text-sm font-medium text-primary">{item.detail}</p>
-                  <p className={`text-xs mt-1 ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>{item.sub}</p>
+                  <h4 className="font-bold mb-1 text-white">{item.title}</h4>
+                  <p className="text-sm font-medium text-white">{item.detail}</p>
+                  <p className="text-xs mt-1 text-white/70">{item.sub}</p>
                 </a>
               ) : (
-                <div className={`${cardBase} p-6 hover:-translate-y-1 transition-transform duration-300`}>
-                  <div className={`w-12 h-12 rounded-xl ${item.bg} flex items-center justify-center ${item.color} mb-4`}>
+                <div className={`p-6 rounded-2xl bg-gradient-to-br ${item.gradient} shadow-lg hover:-translate-y-1 transition-transform duration-300`}>
+                  <div className="w-12 h-12 rounded-xl bg-white/20 flex items-center justify-center text-white mb-4 backdrop-blur-sm">
                     <item.icon size={20} />
                   </div>
-                  <h4 className={`font-bold mb-1 ${isDark ? 'text-white' : 'text-slate-800'}`}>{item.title}</h4>
-                  <p className={`text-sm font-medium ${isDark ? 'text-slate-300' : 'text-slate-700'}`}>{item.detail}</p>
-                  <p className={`text-xs mt-1 ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>{item.sub}</p>
+                  <h4 className="font-bold mb-1 text-white">{item.title}</h4>
+                  <p className="text-sm font-medium text-white">{item.detail}</p>
+                  <p className="text-xs mt-1 text-white/70">{item.sub}</p>
                 </div>
               )}
             </motion.div>
