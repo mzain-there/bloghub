@@ -153,6 +153,38 @@ export const AuthProvider = ({ children }) => {
     return { success: true, message: 'Password changed successfully!' };
   }, [currentUser, users]);
 
+  const checkEmailExists = useCallback((email) => {
+    const normalizedEmail = email.trim().toLowerCase();
+    if (!normalizedEmail) {
+      return { success: false, message: 'Email is required' };
+    }
+    if (!validateEmail(normalizedEmail)) {
+      return { success: false, message: 'Invalid email address' };
+    }
+    const user = users.find(u => u.email.toLowerCase() === normalizedEmail);
+    if (!user) {
+      return { success: false, message: 'No account registered with this email address' };
+    }
+    return { success: true, message: 'Email verified' };
+  }, [users]);
+
+  const resetPassword = useCallback((email, newPassword) => {
+    const normalizedEmail = email.trim().toLowerCase();
+    if (!normalizedEmail || !newPassword) {
+      return { success: false, message: 'All fields are required' };
+    }
+    if (newPassword.length < 6) {
+      return { success: false, message: 'Password must be at least 6 characters' };
+    }
+    const userIndex = users.findIndex(u => u.email.toLowerCase() === normalizedEmail);
+    if (userIndex === -1) {
+      return { success: false, message: 'No account registered with this email address' };
+    }
+
+    setUsers(prev => prev.map((u, i) => i === userIndex ? { ...u, password: newPassword } : u));
+    return { success: true, message: 'Password reset successfully!' };
+  }, [users]);
+
   const deleteAccount = useCallback(() => {
     if (!currentUser) return;
     setUsers(prev => prev.filter(u => u.id !== currentUser.id));
@@ -169,6 +201,7 @@ export const AuthProvider = ({ children }) => {
       currentUser, isAuthenticated, users, savedAccounts,
       signup, login, logout, switchAccount,
       updateProfile, changePassword, deleteAccount, removeAccount,
+      checkEmailExists, resetPassword,
     }}>
       {children}
     </AuthContext.Provider>

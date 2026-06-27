@@ -8,7 +8,7 @@ import { FiMail, FiLock, FiEye, FiEyeOff, FiUsers, FiUserMinus } from 'react-ico
 
 const Login = () => {
   const { isDark } = useTheme();
-  const { login, savedAccounts, switchAccount, removeAccount } = useAuth();
+  const { login, savedAccounts, switchAccount, removeAccount, checkEmailExists, resetPassword } = useAuth();
   const navigate = useNavigate();
 
   const [email, setEmail] = useState('');
@@ -17,6 +17,14 @@ const Login = () => {
   const [rememberMe, setRememberMe] = useState(false);
   const [errors, setErrors] = useState({});
   const [showAccountList, setShowAccountList] = useState(false);
+
+  // Forgot Password flow states
+  const [mode, setMode] = useState('login'); // 'login' | 'forgot_email' | 'forgot_reset'
+  const [forgotEmail, setForgotEmail] = useState('');
+  const [newPassword, setNewPassword] = useState('');
+  const [confirmPassword, setConfirmPassword] = useState('');
+  const [showNewPassword, setShowNewPassword] = useState(false);
+  const [showConfirmPassword, setShowConfirmPassword] = useState(false);
 
   const handleSubmit = (e) => {
     e.preventDefault();
@@ -37,6 +45,49 @@ const Login = () => {
     } else {
       toast.error(res.message);
       setErrors({ form: res.message });
+    }
+  };
+
+  const handleVerifyEmail = (e) => {
+    e.preventDefault();
+    const res = checkEmailExists(forgotEmail);
+    if (res.success) {
+      toast.success('Email verified. Enter your new password below.');
+      setErrors({});
+      setMode('forgot_reset');
+    } else {
+      toast.error(res.message);
+      setErrors({ forgotEmail: res.message });
+    }
+  };
+
+  const handleResetPassword = (e) => {
+    e.preventDefault();
+    const newErrors = {};
+
+    if (!newPassword) newErrors.newPassword = 'New password is required';
+    else if (newPassword.length < 6) newErrors.newPassword = 'Password must be at least 6 characters';
+
+    if (!confirmPassword) newErrors.confirmPassword = 'Please confirm your new password';
+    else if (newPassword !== confirmPassword) newErrors.confirmPassword = 'Passwords do not match';
+
+    if (Object.keys(newErrors).length > 0) {
+      setErrors(newErrors);
+      return;
+    }
+
+    const res = resetPassword(forgotEmail, newPassword);
+    if (res.success) {
+      toast.success(res.message);
+      // Reset form states
+      setForgotEmail('');
+      setNewPassword('');
+      setConfirmPassword('');
+      setErrors({});
+      setMode('login');
+    } else {
+      toast.error(res.message);
+      setErrors({ reset: res.message });
     }
   };
 
@@ -75,18 +126,28 @@ const Login = () => {
             <span className="text-2xl font-bold gradient-text">BlogHub</span>
           </Link>
           <h2 className={`text-3xl font-extrabold tracking-tight ${isDark ? 'text-white' : 'text-slate-900'}`}>
-            Sign in to your account
+            {mode === 'login' && 'Sign in to your account'}
+            {mode === 'forgot_email' && 'Reset your password'}
+            {mode === 'forgot_reset' && 'Choose a new password'}
           </h2>
           <p className={`mt-2 text-sm ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
-            Or{' '}
-            <Link to="/signup" className="font-semibold text-primary hover:text-primary-light">
-              create a new account
-            </Link>
+            {mode === 'login' ? (
+              <>
+                Or{' '}
+                <Link to="/signup" className="font-semibold text-primary hover:text-primary-light">
+                  create a new account
+                </Link>
+              </>
+            ) : mode === 'forgot_email' ? (
+              'Enter your registered email address below'
+            ) : (
+              'Create a secure password for your account'
+            )}
           </p>
         </div>
 
         {/* Toggle Saved Accounts */}
-        {savedAccounts.length > 0 && (
+        {mode === 'login' && savedAccounts.length > 0 && (
           <div className="flex justify-center">
             <button 
               onClick={() => setShowAccountList(!showAccountList)}
@@ -103,7 +164,7 @@ const Login = () => {
           layout
           className={`p-8 rounded-2xl ${isDark ? 'bg-dark-800 border border-white/5' : 'bg-white border border-slate-200'} shadow-xl`}
         >
-          {showAccountList && savedAccounts.length > 0 ? (
+          {mode === 'login' && showAccountList && savedAccounts.length > 0 ? (
             /* Saved Accounts List */
             <div className="space-y-4">
               <p className={`text-xs font-semibold uppercase tracking-wider ${isDark ? 'text-slate-500' : 'text-slate-400'}`}>
@@ -152,6 +213,127 @@ const Login = () => {
                 ))}
               </div>
             </div>
+          ) : mode === 'forgot_email' ? (
+            /* Forgot Password: Enter Email */
+            <form onSubmit={handleVerifyEmail} className="space-y-6">
+              <div>
+                <label className={`block text-xs font-semibold uppercase tracking-wider mb-2 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+                  Email Address
+                </label>
+                <div className={`flex items-center gap-2 px-4 py-3 rounded-xl border transition-colors ${
+                  errors.forgotEmail ? 'border-danger' : isDark ? 'bg-dark-700 border-white/10' : 'bg-slate-50 border-slate-200'
+                }`}>
+                  <FiMail className={isDark ? 'text-slate-500' : 'text-slate-400'} />
+                  <input 
+                    type="email" 
+                    value={forgotEmail}
+                    onChange={e => { setForgotEmail(e.target.value); if (errors.forgotEmail) setErrors(prev => ({ ...prev, forgotEmail: '' })); }}
+                    className={`bg-transparent outline-none text-sm w-full ${isDark ? 'text-white' : 'text-slate-800'}`}
+                    placeholder="name@company.com"
+                  />
+                </div>
+                {errors.forgotEmail && <span className="text-xs text-danger mt-1 block">{errors.forgotEmail}</span>}
+              </div>
+
+              <div className="flex flex-col gap-3">
+                <button 
+                  type="submit"
+                  className="w-full py-3.5 bg-gradient-to-r from-primary to-secondary text-white font-medium rounded-xl hover:shadow-lg hover:shadow-primary/25 transition-all text-sm"
+                >
+                  Verify Email
+                </button>
+                <button 
+                  type="button" 
+                  onClick={() => {
+                    setMode('login');
+                    setErrors({});
+                  }}
+                  className={`w-full py-3 text-center text-sm font-semibold rounded-xl border transition-all ${
+                    isDark ? 'bg-dark-700 text-slate-300 border-white/5 hover:bg-dark-600 hover:text-white' : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'
+                  }`}
+                >
+                  Back to Login
+                </button>
+              </div>
+            </form>
+          ) : mode === 'forgot_reset' ? (
+            /* Forgot Password: Enter New Password */
+            <form onSubmit={handleResetPassword} className="space-y-6">
+              <div>
+                <label className={`block text-xs font-semibold uppercase tracking-wider mb-2 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+                  New Password
+                </label>
+                <div className={`flex items-center gap-2 px-4 py-3 rounded-xl border transition-colors ${
+                  errors.newPassword ? 'border-danger' : isDark ? 'bg-dark-700 border-white/10' : 'bg-slate-50 border-slate-200'
+                }`}>
+                  <FiLock className={isDark ? 'text-slate-500' : 'text-slate-400'} />
+                  <input 
+                    type={showNewPassword ? 'text' : 'password'} 
+                    value={newPassword}
+                    onChange={e => { setNewPassword(e.target.value); if (errors.newPassword) setErrors(prev => ({ ...prev, newPassword: '' })); }}
+                    className={`bg-transparent outline-none text-sm w-full ${isDark ? 'text-white' : 'text-slate-800'}`}
+                    placeholder="••••••••"
+                  />
+                  <button 
+                    type="button"
+                    onClick={() => setShowNewPassword(!showNewPassword)}
+                    className={isDark ? 'text-slate-400 hover:text-white' : 'text-slate-500 hover:text-slate-800'}
+                  >
+                    {showNewPassword ? <FiEyeOff size={16} /> : <FiEye size={16} />}
+                  </button>
+                </div>
+                {errors.newPassword && <span className="text-xs text-danger mt-1 block">{errors.newPassword}</span>}
+              </div>
+
+              <div>
+                <label className={`block text-xs font-semibold uppercase tracking-wider mb-2 ${isDark ? 'text-slate-400' : 'text-slate-600'}`}>
+                  Confirm New Password
+                </label>
+                <div className={`flex items-center gap-2 px-4 py-3 rounded-xl border transition-colors ${
+                  errors.confirmPassword ? 'border-danger' : isDark ? 'bg-dark-700 border-white/10' : 'bg-slate-50 border-slate-200'
+                }`}>
+                  <FiLock className={isDark ? 'text-slate-500' : 'text-slate-400'} />
+                  <input 
+                    type={showConfirmPassword ? 'text' : 'password'} 
+                    value={confirmPassword}
+                    onChange={e => { setConfirmPassword(e.target.value); if (errors.confirmPassword) setErrors(prev => ({ ...prev, confirmPassword: '' })); }}
+                    className={`bg-transparent outline-none text-sm w-full ${isDark ? 'text-white' : 'text-slate-800'}`}
+                    placeholder="••••••••"
+                  />
+                  <button 
+                    type="button"
+                    onClick={() => setShowConfirmPassword(!showConfirmPassword)}
+                    className={isDark ? 'text-slate-400 hover:text-white' : 'text-slate-500 hover:text-slate-800'}
+                  >
+                    {showConfirmPassword ? <FiEyeOff size={16} /> : <FiEye size={16} />}
+                  </button>
+                </div>
+                {errors.confirmPassword && <span className="text-xs text-danger mt-1 block">{errors.confirmPassword}</span>}
+              </div>
+
+              {errors.reset && <span className="text-xs text-danger block">{errors.reset}</span>}
+
+              <div className="flex flex-col gap-3">
+                <button 
+                  type="submit"
+                  className="w-full py-3.5 bg-gradient-to-r from-primary to-secondary text-white font-medium rounded-xl hover:shadow-lg hover:shadow-primary/25 transition-all text-sm"
+                >
+                  Reset Password
+                </button>
+                <button 
+                  type="button" 
+                  onClick={() => {
+                    setMode('forgot_email');
+                    setErrors({});
+                  }}
+                  className={`w-full py-3 text-center text-sm font-semibold rounded-xl border transition-all ${
+                    isDark ? 'bg-dark-700 text-slate-300 border-white/5 hover:bg-dark-600 hover:text-white' : 'bg-slate-50 text-slate-600 border-slate-200 hover:bg-slate-100'
+                  }`}
+                >
+                  Back
+                </button>
+              </div>
+            </form>
           ) : (
             /* Email & Password Login Form */
             <form onSubmit={handleSubmit} className="space-y-6">
@@ -214,7 +396,10 @@ const Login = () => {
                 </label>
                 <button 
                   type="button" 
-                  onClick={() => toast.info('Forgot Password simulated. Sign up for a new account.')}
+                  onClick={() => {
+                    setMode('forgot_email');
+                    setErrors({});
+                  }}
                   className="text-xs font-semibold text-primary hover:text-primary-light"
                 >
                   Forgot Password?

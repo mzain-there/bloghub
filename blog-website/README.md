@@ -1,104 +1,225 @@
+<div align="center">
+
 # BlogHub
 
-A modern full-stack blog platform built with React and Vite. BlogHub lets users sign up, write and manage their own blog posts, and explore community content — with a **personal, real-time dashboard** that shows only your own stats and analytics.
+**A modern, full-featured blog platform built with React & Vite**
+
+[![React](https://img.shields.io/badge/React-19-61DAFB?style=flat&logo=react)](https://react.dev)
+[![Vite](https://img.shields.io/badge/Vite-8-646CFF?style=flat&logo=vite)](https://vitejs.dev)
+[![React Router](https://img.shields.io/badge/React_Router-v7-CA4245?style=flat&logo=react-router)](https://reactrouter.com)
+[![EmailJS](https://img.shields.io/badge/EmailJS-integrated-orange?style=flat)](https://emailjs.com)
+[![License](https://img.shields.io/badge/license-Educational-green?style=flat)](#license)
+
+[Live Demo](https://github.com/mzain-there/bloghub) · [Report a Bug](https://github.com/mzain-there/bloghub/issues) · [Request a Feature](https://github.com/mzain-there/bloghub/issues)
+
+</div>
+
+---
+
+## Overview
+
+BlogHub is a full-featured blog platform where users can sign up, publish and manage their own blog posts, and explore content from the community. Every user gets a **personal real-time dashboard** with analytics, charts, and stats scoped entirely to their own content.
+
+---
+
+## Screenshots
+
+> Dashboard · Blog Feed · Contact Page · About Page
+
+---
 
 ## Features
 
 ### Public Site
-- **Home** — Hero section, featured blogs, categories, trending posts, and newsletter signup
-- **Blogs** — Browse, search, filter, and sort all posts (yours + sample API posts)
-- **Blog Details** — Read full articles with author info, likes, and views
-- **About & Contact** — Team info and contact form
-- **Dark / Light mode** — Theme toggle across the entire app
 
-### Blog Engagement
-- **Views** increment each time any user opens a blog post
-- **Likes** are tracked per user — each account can like a blog once (including your own posts)
-- Like counts are shared across all users in real time (stored in `localStorage`)
-- Multiple users liking the same blog accumulates the total count
+| Section | Description |
+|---|---|
+| **Home** | Hero section, featured blogs, category grid, trending posts, newsletter signup |
+| **Blogs** | Browse, search, filter by category, sort by latest / oldest / popular |
+| **Blog Detail** | Full article with short description subtitle, author info, views, likes, related posts |
+| **About** | Platform stats, mission & vision, core values, team profiles with social links |
+| **Contact** | EmailJS-powered feedback form with dropdown, character counter, success screen |
+| **Dark / Light Mode** | Persistent theme toggle across the entire app |
+
+---
 
 ### Authentication
-- Sign up with profile picture upload
-- **Duplicate emails blocked** — the same email cannot register twice (case-insensitive)
+
+- Sign up with full name, username, email, and optional profile picture
+- Duplicate emails and usernames are blocked (case-insensitive check)
 - Login with email and password
-- Quick account switching on the login page
-- Session persisted in `localStorage`
-- Protected routes for the main site and dashboard
+- Session persisted in `localStorage` — stays logged in across browser refreshes
+- **On logout**, session is fully cleared — no saved account info, no auto-login
+- Protected routes redirect unauthenticated users to `/login`
 
-### Personal Dashboard (Per-User)
-Each logged-in user sees **only their own data**:
-
-| When you have **no blogs** | When you **add blogs** |
-|---|---|
-| Empty dashboard with a "Write Your First Blog" prompt | Live stats: My Blogs, Total Views, Total Likes, Categories Used |
-| No charts displayed | Blog Growth, Category Distribution, Monthly Activity, Views & Likes charts |
-| Manage Blogs shows an empty state | Manage Blogs lists only your posts |
-
-Stats and charts update **in real time** as you create, edit, or delete blogs — no page refresh needed.
+---
 
 ### Blog Management
-- Create and edit blog posts with cover image upload
-- Tag and categorize posts
-- Delete your own blogs
-- Categories management (shared across the app)
 
-### Settings
-- Update profile (name, email)
-- Change password
-- Toggle theme
-- Delete account (removes your user data **and** all your blogs)
+- Create posts with: **Title**, **Short Description**, **Content**, **Category**, **Tags**, **Cover Image**
+- Short description renders on blog cards and as a subtitle on the detail page
+- Cover image upload up to 5MB with live preview in the form
+- Tags placeholder shows real category names as hints
+- Edit and delete only your own posts
+
+---
+
+### Personal Dashboard
+
+Each user sees **only their own data** — completely isolated from other accounts.
+
+| State | What you see |
+|---|---|
+| No blogs published | Empty state with "Write Your First Blog" prompt |
+| Blogs published | Live stats + 4 analytics charts |
+
+**Stat Cards**
+- My Blogs (with monthly growth %)
+- Total Views
+- Total Likes
+- Categories Used
+
+**Analytics Charts**
+- **Blog Growth Over Time** — Cumulative horizontal bar chart, shows only months up to today (no future months)
+- **Category Distribution** — Percentage breakdown by category with colored bars
+- **Monthly Writing Activity** — Vertical bar chart, shows only months up to today
+- **Views & Likes Overview** — Per-post engagement bars
+
+All stats and charts update **in real time** as you add, edit, or delete blogs.
+
+---
+
+### Contact Form (EmailJS)
+
+| Feature | Detail |
+|---|---|
+| Fields | Your Name, Your Email, Feedback Type, Your Feedback |
+| Feedback Types | Bug Report, Feature Request, General Feedback, Question, Suggestion |
+| Character counter | 0–500 on the message field, turns yellow at 400, red at 500 |
+| Send button | Animated spinner + "Sending…" state while in flight |
+| Success screen | Replaces the form with ✅ "Thank you for your feedback! We'll get back to you soon." |
+| Email Us card | Opens Gmail compose window directly in a new tab — no browser permission needed |
+| Info cards | Colorful gradient cards (Email Us, Call Us, Our Office, Support Hours) |
+
+---
+
+### About Page
+
+- Hero with tagline — "Built for Writers. Loved by Readers."
+- Platform stats bar (articles published, active readers, monthly growth, categories)
+- Mission & Vision cards
+- Core Values section (Clarity First, Community Driven, Radical Transparency, Continuous Growth)
+- Team cards with social links (Twitter, GitHub, LinkedIn) + click-to-expand detail modal
+
+---
 
 ## Tech Stack
 
-| Layer | Technology |
-|---|---|
-| Frontend | React 19, Vite 8 |
-| Routing | React Router v7 |
-| Styling | Tailwind CSS (utility classes) |
-| Animations | Framer Motion |
-| Icons | React Icons |
-| Notifications | React Toastify |
-| External Data | DummyJSON API (sample blog posts) |
-| Persistence | Browser `localStorage` |
+| Layer | Technology | Version |
+|---|---|---|
+| UI Framework | React | 19 |
+| Build Tool | Vite | 8 |
+| Routing | React Router | v7 |
+| Styling | Tailwind CSS | utility-first |
+| Animations | Framer Motion | 12 |
+| Icons | React Icons | 5 |
+| Notifications | React Toastify | 11 |
+| Email | @emailjs/browser | 4 |
+| HTTP Client | Axios | 1 |
+| External Data | DummyJSON API | — |
+| Persistence | Browser localStorage | — |
+
+---
 
 ## Project Structure
 
 ```
 blog-website/
+├── public/
+│   ├── favicon.svg
+│   └── icons.svg
 ├── src/
+│   ├── assets/
 │   ├── components/
-│   │   ├── blog/          # BlogCard, CategoryPills, LikeButton
-│   │   ├── common/        # Navbar, Footer, EmptyState, etc.
-│   │   └── dashboard/     # Sidebar, StatCard, AnalyticsChart, etc.
+│   │   ├── blog/
+│   │   │   ├── BlogCard.jsx          # Card with short description preview
+│   │   │   └── CategoryPills.jsx
+│   │   ├── common/
+│   │   │   ├── Navbar.jsx
+│   │   │   ├── Footer.jsx            # Links + social icons (GitHub, LinkedIn, YouTube)
+│   │   │   ├── Breadcrumb.jsx
+│   │   │   ├── ConfirmModal.jsx
+│   │   │   ├── EmptyState.jsx
+│   │   │   ├── ErrorBoundary.jsx
+│   │   │   ├── LikeButton.jsx
+│   │   │   ├── ScrollToTop.jsx
+│   │   │   └── SkeletonLoader.jsx
+│   │   └── dashboard/
+│   │       ├── AnalyticsChart.jsx    # 4 chart types, future months hidden
+│   │       ├── BlogTable.jsx
+│   │       ├── ProfileModal.jsx
+│   │       ├── Sidebar.jsx           # All nav items use exact active matching
+│   │       ├── StatCard.jsx          # Per-user stats with colored icon badges
+│   │       ├── TopNavbar.jsx
+│   │       └── WelcomeCard.jsx
 │   ├── context/
-│   │   ├── AuthContext.jsx    # Users, login, signup, session
-│   │   ├── BlogContext.jsx    # Blogs, categories, per-user stats
-│   │   └── ThemeContext.jsx   # Dark/light theme
+│   │   ├── AuthContext.jsx           # Auth, session mgmt, no persistent saved accounts
+│   │   ├── BlogContext.jsx           # Blogs, categories, per-user stats
+│   │   └── ThemeContext.jsx          # Dark / light theme
+│   ├── data/
+│   │   ├── categories.js             # 10 default categories with icons + colors
+│   │   └── teamMembers.js            # Team data with social links
+│   ├── hooks/
+│   │   ├── useLocalStorage.js
+│   │   └── useScrollTop.js
 │   ├── layouts/
-│   │   ├── PublicLayout.jsx
-│   │   └── DashboardLayout.jsx
+│   │   ├── DashboardLayout.jsx
+│   │   └── PublicLayout.jsx
 │   ├── pages/
-│   │   ├── Home/, Blogs/, BlogDetails/, About/, Contact/
-│   │   ├── Login/, Signup/
-│   │   ├── admin/             # DashboardHome, BlogManage, BlogForm
-│   │   └── Settings/
-│   ├── services/api.js        # DummyJSON integration
-│   └── utils/helpers.js
+│   │   ├── Home/                     # Hero, featured, categories, trending, newsletter
+│   │   ├── Blogs/                    # Browse + filter + sort
+│   │   ├── BlogDetails/              # Full article + short description subtitle
+│   │   ├── About/                    # Rebuilt — stats, values, team
+│   │   ├── Contact/                  # EmailJS form + colorful info cards + FAQ
+│   │   ├── Login/                    # Email + password, no persistent saved accounts
+│   │   ├── Signup/
+│   │   ├── Profile/
+│   │   ├── Settings/
+│   │   └── admin/
+│   │       ├── BlogForm.jsx          # Create/edit with shortDescription + tags hints
+│   │       ├── BlogManage.jsx        # Per-user blog table
+│   │       ├── CategoryManage.jsx
+│   │       └── DashboardHome.jsx     # Stats + charts
+│   ├── routes/
+│   │   └── ProtectedRoute.jsx
+│   ├── services/
+│   │   └── api.js                    # DummyJSON integration
+│   └── utils/
+│       └── helpers.js
 ├── index.html
 ├── package.json
 └── vite.config.js
 ```
 
+---
+
 ## Getting Started
 
 ### Prerequisites
+
 - [Node.js](https://nodejs.org/) 18 or later
 - npm
 
 ### Installation
 
 ```bash
-cd blog-website
+# Clone the repository
+git clone https://github.com/mzain-there/bloghub.git
+
+# Navigate into the project
+cd bloghub/blog-website
+
+# Install dependencies
 npm install
 ```
 
@@ -108,7 +229,7 @@ npm install
 npm run dev
 ```
 
-Open the URL shown in the terminal (usually `http://localhost:5173`).
+Open the URL shown in the terminal — usually `http://localhost:5173`.
 
 ### Production Build
 
@@ -117,55 +238,100 @@ npm run build
 npm run preview
 ```
 
-## How Per-User Dashboard Works
+---
 
-1. **Sign up / Log in** — A unique `userId` is assigned to your account.
-2. **Create a blog** — Each new post is saved with your `userId` in `localStorage`.
-3. **Dashboard filters** — Stats, charts, and the blog table only include posts where `blog.userId === currentUser.id`.
-4. **Switch accounts** — Log in as a different user to see a completely separate dashboard.
-5. **Delete account** — All blogs linked to your `userId` are removed automatically.
+## EmailJS Configuration
 
-### localStorage Keys
+The contact form sends emails without a backend using [EmailJS](https://emailjs.com).
+
+### Credentials (set in `Contact.jsx`)
+
+```js
+const EMAILJS_SERVICE_ID  = 'your_service_id';
+const EMAILJS_TEMPLATE_ID = 'your_template_id';
+const EMAILJS_PUBLIC_KEY  = 'your_public_key';
+```
+
+### Template Variables
+
+| Variable | Value |
+|---|---|
+| `{{from_name}}` | Sender's full name |
+| `{{from_email}}` | Sender's email address |
+| `{{feedback_type}}` | Selected option from dropdown |
+| `{{message}}` | Feedback message (max 500 chars) |
+
+**Recommended template subject:**
+```
+New {{feedback_type}} from {{from_name}}
+```
+
+Set **Reply To** to `{{from_email}}` so you can reply directly to the sender from Gmail.
+
+---
+
+## Routes
+
+| Path | Access | Page |
+|---|---|---|
+| `/` | Auth required | Home |
+| `/blogs` | Auth required | Blog feed |
+| `/blogs/:id` | Auth required | Blog detail |
+| `/about` | Auth required | About |
+| `/contact` | Auth required | Contact / feedback |
+| `/login` | Public | Login |
+| `/signup` | Public | Sign up |
+| `/dashboard` | Auth required | Personal dashboard |
+| `/dashboard/blogs` | Auth required | Manage your blogs |
+| `/dashboard/blogs/add` | Auth required | Create blog |
+| `/dashboard/blogs/edit/:id` | Auth required | Edit blog |
+| `/dashboard/categories` | Auth required | Manage categories |
+| `/dashboard/settings` | Auth required | Account settings |
+
+---
+
+## localStorage Keys
 
 | Key | Purpose |
 |---|---|
 | `bloghub_users` | All registered user accounts |
-| `bloghub_session` | Current logged-in user |
-| `bloghub_blogs` | All user-created blog posts (each tagged with `userId`) |
-| `bloghub_engagement` | Views and likes for API sample posts |
+| `bloghub_session` | Active user session |
+| `bloghub_blogs` | User-created posts (each tagged with `userId`) |
+| `bloghub_engagement` | Views and likes for DummyJSON API posts |
 | `bloghub_categories` | Shared category list |
-| `bloghub_accounts` | Saved accounts for quick login switch |
 
-## Routes
+> `bloghub_accounts` (saved accounts) was removed. Account info is session-only and cleared on logout.
 
-| Path | Access | Description |
-|---|---|---|
-| `/` | Authenticated | Home page |
-| `/blogs` | Authenticated | Browse all blogs |
-| `/blogs/:id` | Authenticated | Blog detail |
-| `/about`, `/contact` | Authenticated | Info pages |
-| `/login`, `/signup` | Public | Authentication |
-| `/dashboard` | Authenticated | Personal stats dashboard |
-| `/dashboard/blogs` | Authenticated | Manage your blogs |
-| `/dashboard/blogs/add` | Authenticated | Create a blog |
-| `/dashboard/blogs/edit/:id` | Authenticated | Edit your blog |
-| `/dashboard/categories` | Authenticated | Manage categories |
-| `/dashboard/settings` | Authenticated | Account settings |
+---
 
-## Sample Workflow
+## How Per-User Dashboard Works
 
-1. **Sign up** as a new user → Dashboard is empty.
-2. Click **Write Your First Blog** → Fill in the form and publish.
-3. Return to **Dashboard** → Stats and charts appear with your blog data.
-4. **Log out** and sign up as another user → Empty dashboard again.
-5. Each user's blogs and analytics stay completely separate.
+1. **Sign up / Login** — a unique `userId` is assigned to your account
+2. **Create a blog** — saved to `localStorage` with your `userId`
+3. **Dashboard filters** — all stats and charts only include `blog.userId === currentUser.id`
+4. **Switch accounts** — log in as a different user to see a completely separate dashboard
+5. **Delete account** — removes your user record and all your blog posts automatically
+
+---
 
 ## Notes
 
-- Sample posts from the DummyJSON API appear on the public **Blogs** page but are **not** included in your personal dashboard.
-- Data is stored in the browser's `localStorage`, so it persists across sessions on the same device but is not synced to a server.
-- This is a frontend demo project — passwords are stored in plain text in `localStorage` and should not be used in production without a proper backend.
+- DummyJSON API posts appear on the public Blogs feed but are **not** counted in personal dashboard stats
+- All data lives in `localStorage` — it persists on the same device but is not synced to a server
+- Passwords are stored in plain text — this is a **frontend demo project** and is not intended for production use without a proper backend
+
+---
+
+## Author
+
+**M Zain**
+
+[![GitHub](https://img.shields.io/badge/GitHub-mzain--there-181717?style=flat&logo=github)](https://github.com/mzain-there)
+[![LinkedIn](https://img.shields.io/badge/LinkedIn-m--zain--there7989-0A66C2?style=flat&logo=linkedin)](https://linkedin.com/in/m-zain-there7989)
+[![YouTube](https://img.shields.io/badge/YouTube-Channel-FF0000?style=flat&logo=youtube)](https://www.youtube.com/channel/UCWCgkd4-Ju5Wg2pzbLsWZoQ)
+
+---
 
 ## License
 
-This project is for educational and demonstration purposes.
+This project is for educational and demonstration purposes only.
